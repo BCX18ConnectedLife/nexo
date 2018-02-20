@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package nexoPbInterface;
+
+import "google/protobuf/timestamp.proto";
+
+message vectorData {
+  int32 dx = 1;
+  int32 dy = 2;
+  int32 dz = 3;
+  uint32 status = 4;
+}
+
+message tighteningValues {
+  double tightTimeStamp = 1; //[s] starts from 0.000 which each tightening 
+  uint32 programNumber = 2; //selected tightening program
+  uint32 programStep = 3; //actual tightening step while tightening
+  uint32 tCycleCounter = 4;
+  double torque = 5; //[Nm]
+  int32 angle = 6; //[degree]
+}
+
+message batteryValues {
+  uint32 status = 1; //0=not connected; 1=empty (shut down); 2=empty (no tightening); 3=ok; 4=connected; 5=warning (before tightening) 
+  uint32 availableCapacity = 2; //[percent]
+}
+
+message wlanValues {
+  int32 status = 1;
+  int32 recvFieldStrength = 2; //-45=5 bars .. -90=1 bar
+}
+
+message buttonValues {
+  enum dirSwitchStatus {
+    offS = 0;
+    cwS = 1;
+    ccwS = 2;
+  }
+  dirSwitchStatus dirSwitch = 1;
+  uint32 startBtnPoti = 2; //[percent] 0..100
+}
+
+message motorValues {
+  int32 motorTemperature = 1; //[degree celcius]
+  int32 motorCurrent = 2; //[mA]
+}
+
+message idCodeValues {
+  string scannerIDcode = 1;
+}
+
+message actValues {
+  google.protobuf.Timestamp nsTimeStamp = 1; //[s.ns] UTC0 since 1.1.1970
+  vectorData toolGyroVals = 2; //[1/10 degree]
+  vectorData toolAccelVals = 3; //[1/100 m/s²]
+  buttonValues button = 4;
+  motorValues motor = 5;
+  batteryValues battery = 6;
+  tighteningValues tv = 7;
+  wlanValues wlan = 8;
+  idCodeValues idCode = 9;
+}
